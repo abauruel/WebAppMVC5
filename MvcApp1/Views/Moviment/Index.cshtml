@@ -1,0 +1,115 @@
+﻿@model IEnumerable<MvcApp1.Models.Moviment>
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<style>
+   
+</style>
+<div id="ContentMoviment">
+    <h2>Select your Date</h2>
+
+    <form method="post" class="form-inline">
+
+        <input type="date" name="data1" id="data1" placeholder="Initial date" required />
+
+        <input type="date" name="data2" id="data2" placeholder="Final date" required />
+
+        <input type="submit" value="search" />
+
+
+    </form>
+
+    <br />
+    @{
+        if (ViewBag.MESSAGE != null)
+        {<div id="ContainerError">@ViewBag.MESSAGE</div>}
+    }
+
+    <br />
+
+    @{
+        if (ViewBag.MIN != null)
+        {
+            <div id="badgeFilter">
+                <span>Minor price @ViewBag.MIN </span>
+                <span>Average @ViewBag.AVERAGE</span>
+                <span>Major price @ViewBag.MAX</span>
+                <span>Time more expensive @ViewBag.TIMEEXPENSIVE</span>
+            </div>
+            <div id="chart_container">
+                <canvas id="bar_chart"></canvas>
+            </div>
+            <br />
+            <br />
+
+            <br />
+            <div id="table">
+                <table id="tableFilter">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Date)
+                        </th>
+                        <th>@Html.DisplayNameFor(model => model.Price)</th>
+                    </tr>
+
+
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                        </tr>
+
+                    }
+
+                </table>
+            </div>
+        }
+
+    }
+</div>
+<script src="~/Scripts/Chart.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+    //add smal mask on input
+
+
+    var datesArray = @Html.Raw(Json.Encode(ViewBag.DATES));
+    var prices = @Html.Raw(Json.Encode(ViewBag.PRICES));
+    var ctx = $("#bar_chart");
+    var barChart = new Chart(ctx, {
+
+        type: 'line',
+        data: {
+            labels: datesArray,
+            datasets: [{
+                label: "Price",
+                data: prices,
+                background: [
+                    "rgba(242,166,54,0.5)",
+                    "rgba(145,65,72,0.5)",
+                    "rgba(74,25,92,0.5)",
+                ],
+                borderColor: ["rgb(242,168,54)", "rgb(145,65,72)", "rgb(74,25,92)"],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: { xAxes: [{ ticks: { beginAtZero: true } }] },
+        legend: { display: false },
+
+    }
+        ,
+
+    });
+</script>
+

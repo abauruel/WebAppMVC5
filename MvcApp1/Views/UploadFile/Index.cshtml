@@ -1,0 +1,33 @@
+﻿
+<form method="post" enctype="multipart/form-data" id="ContentUpload">
+
+    <label for="file"><span id="filename"><span>Select your file</span></span></label>
+    <input type="file" name="file" id="file" />
+
+    <input type="submit" value="Upload" />
+
+</form>
+@{ if (@ViewBag.ERROR != null)
+    {
+        <div id="ContainerError"><span>@ViewBag.Error</span></div>
+
+
+    }
+
+    if (@ViewBag.SUCCESS!=null)
+    {
+        <div id="ContainerSuccessMsg"><span>@ViewBag.SUCCESS</span></div>
+    }
+
+
+}
+
+<script>
+    var input = document.getElementById('file')
+    console.log(input)
+
+    var filename = document.getElementById('filename')
+
+    input.addEventListener('change', function () { filename.textContent = this.value })
+
+</script>
